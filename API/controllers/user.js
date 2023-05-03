@@ -24,6 +24,7 @@ async function register(req, res) {
 async function login(req, res) {
   try {
     const data = req.body;
+    console.log("line 27", data);
     const user = await User.getOneByUsername(data.username);
 
     // checks the data from user to the database
@@ -41,21 +42,11 @@ async function login(req, res) {
 }
 
 async function logout(req, res) {
-  try {
-    const data = req.body;
-    const user = await User.getOneByUsername(data.username);
-
-    const authenticated = await bcrypt.compare(data.password, user["password"]);
-
-    if (!authenticated) {
-      throw new Error("Incorrect credentials.");
-    } else {
-      const token = await Token.delete(user["id"]);
-      res.status(200).json({ authenticated: true, token: token.token });
-    }
-  } catch (err) {
-    res.status(403).json({ error: err.message });
-  }
+  const data = req.body;
+  console.log("line46", data);
+  const token = await Token.delete(user["id"], data.token);
+  console.log(token);
+  res.json(token);
 }
 
 module.exports = {

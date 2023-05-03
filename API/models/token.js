@@ -41,6 +41,7 @@ class Token {
     }
 
     static async delete(token) {
+        console.log(token)
         const response = await db.query("DELETE FROM token WHERE token = $1", [token]);
         if (response.rows.length != 1) {
             throw new Error("Unable to locate token.");
